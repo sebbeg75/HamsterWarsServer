@@ -1,0 +1,69 @@
+﻿@page "/battle"
+@inject IHamsterRepository _hR
+@inject IBattleRepository _bR
+@inject NavigationManager _nM
+
+
+<h2 class="text-center">Battle of the century</h2>
+<h4 class="text-center">Click on your favourite contender!</h4>
+
+@if (contendersList is null)
+{
+    <p><em>Loading. . .</em></p>
+}
+else
+{
+    <div class="row justify-content-center text-center">
+        <div class="text-center">
+            <div class="one-hamster-container">
+                <div class="hamster-item">
+                    <img src="@contender1.ImgName" alt="@contender1.Name">
+                    <p><b>Name:</b> @contender1.Name</p>
+                    <p><b>Age:</b> @contender1.Age</p>
+                    <p><b>Favourite Food:</b> @contender1.FavFood</p>
+                    <p><b>Favourite thing:</b> @contender1.Loves</p>
+                    <button class="btn btn-outline-primary"  type="submit" @onclick="(() => UpdateBattleStatus(contender1, contender2))">Like</button>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="text-center"><i>VS</i></h3>
+    
+        <div class="text-center">
+            <div class="one-hamster-container">
+                <div class="hamster-item">
+                    <img src="@contender2.ImgName" alt="@contender2.Name">
+                    <p><b>Name:</b> @contender2.Name</p>
+                    <p><b>Age:</b> @contender2.Age</p>
+                    <p><b>Favourite Food:</b> @contender2.FavFood</p>
+                    <p><b>Favourite thing:</b> @contender2.Loves</p>
+                    <button class="btn btn-outline-primary" type="submit" @onclick="(() => UpdateBattleStatus(contender2, contender1))">Like</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<hr />
+
+@if (oldContender1 != null && oldContender2 != null)
+{
+    <div class="container" style="text-align:center">
+        <div class="card col-2 row-5 rounded" style="float:left; margin: 0.5%; background-color:pink">
+            Last Battle: Winner
+            <img src="@oldContender1.ImgName" alt="@oldContender1.Name">
+            <h5><b>Name:</b> @oldContender1.Name</h5>
+            <h5><b>Wins:</b> @oldContender1.Wins</h5>
+            <h5><b>Losses:</b> @oldContender1.Losses</h5>
+            <h5><b>Games:</b> @oldContender1.Games</h5>
+        </div>
+        <div class="card col-2 row-5 rounded" style="float:left; margin: 0.5%; background-color:pink">
+            Last Battle: Losser
+            <img src="@oldContender2.ImgName" alt="@oldContender2.Name">
+            <h5><b>Name:</b> @oldContender2.Name</h5>
+            <h5><b>Wins:</b> @oldContender2.Wins</h5>
+            <h5><b>Losses:</b> @oldContender2.Losses</h5>
+            <h5><b>Games:</b> @oldContender2.Games</h5>
+        </div>
+    </div>
+}
+

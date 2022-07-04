@@ -1,0 +1,44 @@
+﻿@page "/hamsterRegister"
+@inject IHamsterRepository _hR
+@inject NavigationManager _nM
+
+<h2 class="text-center">Hamster Register</h2>
+
+
+<EditForm Model="@hamster" OnValidSubmit="@AddHamster">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <RadzenLabel Text="Name" />
+        <InputText id="name" @bind-Value="@hamster.Name" class="form-control"></InputText>
+    </div>
+    <div>
+        <RadzenLabel Text="Age" />
+        <InputNumber id="age" @bind-Value="@hamster.Age" class="form-control"></InputNumber>
+    </div>
+    <div>
+        <RadzenLabel Text="Favorite Food" />
+        <InputText id="favfood" @bind-Value="@hamster.FavFood" class="form-control"></InputText>
+    </div>
+    <div>
+        <RadzenLabel Text="Loves" />
+        <InputText id="loves" @bind-Value="@hamster.Loves" class="form-control"></InputText>
+    </div>
+    <div>
+        <RadzenLabel Text="Image" />
+        <InputText id="ImgName" @bind-Value="@hamster.ImgName" class="form-control"></InputText>
+    </div>
+    <br />
+    @*<RadzenButton ButtonType="ButtonType.Submit" Text="Save" ButtonStyle="ButtonStyle.Success" />*@
+    <button type="submit" class="btn btn-success">Save</button>
+</EditForm>
+
+@code {
+    private Hamster hamster = new Hamster();
+
+    private async Task AddHamster()
+    {
+       await _hR.AddHamster(hamster);
+       _nM.NavigateTo("/gallery");
+    } 
+}

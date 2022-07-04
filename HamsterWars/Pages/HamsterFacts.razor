@@ -1,0 +1,43 @@
+﻿@page "/hamsterfacts/{id:int}"
+@inject IHamsterRepository _hR
+@inject NavigationManager _nM
+
+<h3 class="text-center">Hamster Facts</h3>
+
+@if (_hR is null)
+{
+    <p><em>Loading. . .</em></p>
+}
+else
+{
+    <div class="one-hamster-container">
+        <div class="hamster-item">
+            <img src="@hamster.ImgName" alt="@hamster.Name">
+            <p><b>Name:</b> @hamster.Name</p>
+            <p><b>Age:</b> @hamster.Age</p>
+            <p><b>Favourite Food:</b> @hamster.FavFood</p>
+            <p><b>Favourite thing:</b> @hamster.Loves</p>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-secondary" @onclick="(() => GoToGallery())">Go to Gallery</button>
+        <button type="button" class="btn btn-danger" @onclick="(() => DeleteHamster(Id))">Delete Hamster</button>
+    </div>
+}
+
+@code {
+    Hamster hamster = new Hamster();
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync() => hamster = await _hR.GetHamsterById(Id);
+
+    void GoToGallery() => _nM.NavigateTo("/gallery");
+
+    private async Task DeleteHamster(int id)
+    {
+        await _hR.DeleteHamster(hamster.Id);
+        _nM.NavigateTo("/gallery");
+    } 
+}

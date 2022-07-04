@@ -1,0 +1,37 @@
+﻿@page "/gallery"
+@inject IHamsterRepository _hR
+@inject NavigationManager _nM
+
+<h2 class="text-center">Hamster Gallery</h2>
+
+@if (_hR is null)
+{
+    <p><em>Loading. . .</em></p>
+}
+else
+{
+    <div class="row justify-content-center text-center">
+        @foreach (var hamster in _hR.Hamsters)
+        {
+            <a class="col col-sm-2 btn" @onclick="(() => GoToFacts(hamster.Id))">
+                <div class="card card-style" style="background-color: pink">
+                    <div class="card-title">
+                        @hamster.Name
+                    </div>
+                    <div class="card-img">
+                        <img class="hamster-image" src="@hamster.ImgName">
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}
+ 
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await _hR.GetHamsters();
+    }
+
+    void GoToFacts(int id) => _nM.NavigateTo($"hamsterfacts/{id}");
+}
