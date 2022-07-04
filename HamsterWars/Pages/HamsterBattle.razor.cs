@@ -6,12 +6,12 @@ namespace HamsterWars.Pages
 {
     public partial class HamsterBattle : ComponentBase
     {
-        private List<Hamster>? contendersList;
-        private Hamster? contender1;
-        private Hamster? contender2;
-        private Hamster? oldContender1;
-        private Hamster? oldContender2;
-        private Battle BattleResult = new();
+        public List<Hamster>? contendersList;
+        public Hamster? contender1;
+        public Hamster? contender2;
+        public Hamster? oldContender1;
+        public Hamster? oldContender2;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,7 +37,7 @@ namespace HamsterWars.Pages
         {
             hamsterLosser.Losses++;
             hamsterLosser.Games++;
-        }  
+        }
 
         public async Task UpdateBattleStatus(Hamster hamsterWinner, Hamster hamsterLosser)
         {
@@ -46,17 +46,16 @@ namespace HamsterWars.Pages
             await _hR.UpdateHamster(hamsterWinner);
             await _hR.UpdateHamster(hamsterLosser);
             ReloadBattle(hamsterWinner, hamsterLosser);
-            await _bR.AddBattle(BattleResult);
-            await _bR.UpdateBattle(BattleResult);
+            await _bR.AddAndUpdateHamster(hamsterWinner.Id, hamsterLosser.Id);
+
             NextContenders();
-            
-            await Task.Run(() => Thread.Sleep(50));
+            StateHasChanged();
         }
 
         public void NextContenders()
         {
             (contender1, contender2) = _bR.GetContenders(contendersList);
-            StateHasChanged();   
+
         }
 
         public void ReloadBattle(Hamster hamsterWinner, Hamster hamsterLosser)

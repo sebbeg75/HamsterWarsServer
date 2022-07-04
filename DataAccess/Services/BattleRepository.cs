@@ -13,13 +13,6 @@ public class BattleRepository : IBattleRepository
     }
 
     public List<Hamster> Hamsters { get; set; } = new List<Hamster>();
-    public List<Battle> Battles { get; set; } = new List<Battle>();
-
-    public async Task AddBattle(Battle battle)
-    {
-        _context.Battles.Add(battle);
-        await _context.SaveChangesAsync();
-    }
 
     public (Hamster, Hamster) GetContenders(List<Hamster> contenders)
     {
@@ -56,23 +49,15 @@ public class BattleRepository : IBattleRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateBattle(Battle battle)
+    public async Task AddAndUpdateHamster(int winnerId, int losserId)
     {
-        var DbBattle = await _context.Battles.FindAsync(battle.Id);
+        Battle battle = new Battle();
+        battle.WinnerId = winnerId;
+        battle.LoserId = losserId;
 
-        DbBattle.WinnerId = battle.WinnerId;
-        DbBattle.LoserId = battle.LoserId;
+        _context.Add(battle);
         await _context.SaveChangesAsync();
-    }
 
-    //public async Task AddNewBattle(Hamster hamsterWinner, Hamster hamsterLosser)
-    //{
-    //    Battle battle = new Battle
-    //    {
-    //        WinnerId = hamsterWinner.Id,
-    //        LoserId = hamsterLosser.Id
-    //    };
-    //    _context.Battles.Add(battle);
-    //    await _context.SaveChangesAsync();
-    //}
+
+    }
 }
